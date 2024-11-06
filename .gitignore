@@ -1,0 +1,13 @@
+# Compiled Output
+/dist
+
+# Dependencies
+/node_modules
+
+# Misc
+/coverage
+/upload/*
+
+# System Files
+.DS_Store
+yarn.lock

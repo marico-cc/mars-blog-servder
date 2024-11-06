@@ -1,0 +1,524 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """PrimaryKey"""
+  id: ID
+  userName: String!
+  email: String
+  nickName: String!
+  phone: String
+  gender: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Tag {
+  """ID"""
+  id: ID!
+
+  """name"""
+  name: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type TagArticleRelationship {
+  articleId: ID!
+  articles: [Article!]
+  tagId: ID!
+  tags: [Tag!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Article {
+  id: ID!
+  siteId: ID!
+  nodeId: ID!
+  userId: ID
+  title: String!
+  isPrivate: String
+  content: String!
+  thumbUrl: String
+  images: [String!]
+  author: String
+  origin: String
+  originUrl: String
+  tags: JSON
+  viewCount: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type File {
+  id: ID!
+  fileName: String!
+  fileMime: String!
+  fileType: String!
+  filePath: String!
+  fileSize: Float
+  siteId: ID
+  queryCount: ID
+  createdBy: ID
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Node {
+  """site id"""
+  id: ID!
+  parentId: ID
+  nodeName: String!
+  uniKey: String
+  siteId: ID!
+  type: String!
+  uploadMax: Int
+  order: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Site {
+  """Site ID"""
+  id: ID!
+  siteName: String!
+  siteDomain: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Role {
+  """role id"""
+  id: ID!
+
+  """site id"""
+  siteId: ID!
+  userId: ID!
+  roleCode: String
+  createdBy: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Setting {
+  """setting id"""
+  id: ID!
+
+  """siteId, nodeId, etc... """
+  belongId: ID!
+  values: JSON
+  createdBy: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type SettingValues {
+  """setting id"""
+  id: ID!
+
+  """setting id"""
+  settingId: ID!
+
+  """siteId, nodeId, etc... """
+  belongId: ID!
+  values: JSON
+  createdBy: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Media {
+  id: ID!
+  siteId: ID
+  nodeId: ID!
+  title: String!
+  mediaList: JSON
+  content: String
+  thumbUrl: String
+  viewCount: Int
+  createdBy: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type CustomizedForm {
+  id: ID!
+  siteId: String!
+  nodeId: String!
+  values: JSON
+  createdBy: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type CurrentUserInfo {
+  """PrimaryKey"""
+  id: ID
+  userName: String!
+  email: String
+  nickName: String!
+  phone: String
+  gender: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+  isSystemAdmin: Boolean!
+  isAdmin: Boolean!
+  isSuperAdmin: Boolean!
+}
+
+type IsSiteAdmin {
+  isSiteAdmin: Boolean!
+  isSiteSuperAdmin: Boolean!
+}
+
+type TokenPayload {
+  user: User!
+  token: String!
+  freshToken: String!
+  expireAt: DateTime!
+}
+
+type OssUploadSignature {
+  expire: String!
+  policy: String!
+  signature: String!
+  accessId: String!
+  host: String!
+  callback: String!
+  dir: String!
+}
+
+type Query {
+  users(userIds: [ID!]!): [User!]!
+  searchUsers(keyword: String!): [User!]!
+  user(id: ID!): User!
+  articleCount(siteId: ID!, nodeId: ID!, keyword: String): Int!
+  articleCountByIds(siteId: ID!, nodeId: [ID!]!, keyword: String): Int!
+  articles(siteId: ID!, nodeId: ID!, keyword: String, page: Int, pageSize: Int, orderBy: String, order: String, isPrivate: String): [Article!]!
+  articlesByIds(siteId: ID!, nodeId: [ID!]!, keyword: String, page: Int, pageSize: Int, orderBy: String, order: String, isPrivate: String): [Article!]!
+  allArticles(siteId: ID!, keyword: String, page: Int, pageSize: Int, orderBy: String, order: String): [Article!]!
+  topArticles(nodeId: ID!): [Article!]
+  article(id: ID!): Article!
+  page(nodeId: ID!): Article
+  tag(id: String!): Tag!
+  tagArticleRelationships: [TagArticleRelationship!]!
+  tagArticleRelationship(id: Int!): TagArticleRelationship!
+  nodes(siteId: ID!): [Node!]!
+  node(id: ID!): Node!
+  nodeTypes: [[String!]!]!
+  sites: [Site!]!
+  site(id: ID!): Site!
+  rolesOfSites(siteIds: [ID!]!): [Role!]
+  currentRole: CurrentUserInfo!
+  isSiteAdmin(siteId: ID!): IsSiteAdmin!
+  role(id: ID!): Role!
+  login(loginInput: LoginUserInput!): TokenPayload!
+  refreshToken(token: String!): TokenPayload!
+  files: [File!]!
+  file(id: ID!): File!
+  ossInit: OssUploadSignature!
+  settings: [Setting!]!
+  setting(belongId: ID!): Setting
+  allSettingValues: [SettingValues!]!
+  settingValues(belongId: ID!): SettingValues
+  mediaCount(nodeId: ID!, keyword: String): Int!
+  topMedia(nodeId: ID!): [Media!]
+  mediaList(nodeId: ID!, keyword: String, page: Int, pageSize: Int, orderBy: String, order: String): [Media!]!
+  media(id: ID!): Media!
+  customizedCount(nodeId: ID!): Int!
+  customizedForms(nodeId: ID!, page: Int, pageSize: Int, orderBy: String, order: String): [CustomizedForm!]
+  customizedForm(id: ID!): CustomizedForm!
+}
+
+input LoginUserInput {
+  userName: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: ID!): User!
+  createArticle(createArticleInput: CreateArticleInput!): Article!
+  updateArticle(updateArticleInput: UpdateArticleInput!): Article!
+  savePage(savePageInput: SavePageInput!): Article!
+  removeArticle(id: ID!): Article!
+  createTag(createTagInput: CreateTagInput!): Tag!
+  updateTag(updateTagInput: UpdateTagInput!): Tag!
+  removeTag(id: Int!): Tag!
+  createTagArticleRelationship(createRelationshipInput: CreateTagArticleRelationshipInput!): TagArticleRelationship!
+  updateTagArticleRelationship(updateTagArticleRelationshipInput: UpdateTagArticleRelationshipInput!): TagArticleRelationship!
+  removeTagArticleRelationship(id: Int!): TagArticleRelationship!
+  createNode(createNodeInput: CreateNodeInput!): Node!
+  updateNode(updateNodeInput: UpdateNodeInput!): Node!
+  removeNode(id: ID!): Node!
+  createSite(createSiteInput: CreateSiteInput!): Site!
+  updateSite(updateSiteInput: UpdateSiteInput!): Site!
+  removeSite(id: ID!): Site!
+  createRole(createRoleInput: CreateRoleInput!): Role!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
+  removeRole(id: Int!): Role!
+  createFile(createFileInput: CreateFileInput!): File!
+  removeFile(fileName: String!): File!
+  createSetting(createSettingInput: CreateSettingInput!): Setting!
+  updateSetting(updateSettingInput: UpdateSettingInput!): Setting!
+  removeSetting(id: ID!): SettingValues!
+  createSettingValues(createSettingValuesInput: CreateSettingValuesInput!): SettingValues!
+  updateSettingValues(updateSettingValuesInput: UpdateSettingValuesInput!): SettingValues!
+  createMedia(createMediaInput: CreateMediaInput!): Media!
+  updateMedia(updateMediaInput: UpdateMediaInput!): Media!
+  removeMedia(id: ID): Media!
+  createCustomizedForm(createCustomizedFormInput: CreateCustomizedFormInput!): CustomizedForm!
+  updateCustomizedForm(updateCustomizedFormInput: UpdateCustomizedFormInput!): CustomizedForm!
+  removeCustomizedForm(id: ID!): CustomizedForm
+}
+
+input CreateUserInput {
+  userName: String!
+  email: String
+  password: String!
+  nickName: String!
+  phone: String
+  gender: String
+}
+
+input UpdateUserInput {
+  userName: String
+  email: String
+  password: String
+  nickName: String
+  phone: String
+  gender: String
+  id: ID!
+}
+
+input CreateArticleInput {
+  siteId: ID!
+  nodeId: ID!
+  userId: ID
+  title: String!
+  isPrivate: String!
+  content: String!
+  thumbUrl: String
+  images: [String!]
+  author: String
+  origin: String
+  originUrl: String
+  tags: JSON
+}
+
+input UpdateArticleInput {
+  siteId: ID
+  nodeId: ID
+  userId: ID
+  title: String
+  isPrivate: String
+  content: String
+  thumbUrl: String
+  images: [String!]
+  author: String
+  origin: String
+  originUrl: String
+  tags: JSON
+  id: ID!
+}
+
+input SavePageInput {
+  id: ID
+  siteId: ID!
+  nodeId: ID!
+  title: String!
+  content: String!
+  thumbUrl: String
+  images: [String!]
+}
+
+input CreateTagInput {
+  """Tag name"""
+  name: String!
+}
+
+input UpdateTagInput {
+  """Tag name"""
+  name: String
+  id: String!
+}
+
+input CreateTagArticleRelationshipInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateTagArticleRelationshipInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateNodeInput {
+  parentId: ID
+  nodeName: String!
+  uniKey: String
+  siteId: ID!
+  type: String!
+  uploadMax: Int
+  order: Int
+}
+
+input UpdateNodeInput {
+  parentId: ID
+  nodeName: String
+  uniKey: String
+  siteId: ID
+  type: String
+  uploadMax: Int
+  order: Int
+  id: ID!
+}
+
+input CreateSiteInput {
+  """site name"""
+  siteName: String!
+  siteDomain: String
+  superAdmin: [ID!]
+  admin: [ID!]
+  user: [ID!]
+}
+
+input UpdateSiteInput {
+  """site name"""
+  siteName: String
+  siteDomain: String
+  superAdmin: [ID!]
+  admin: [ID!]
+  user: [ID!]
+  id: ID!
+}
+
+input CreateRoleInput {
+  siteId: ID!
+  userId: ID!
+  roleCode: String!
+  createdBy: String
+}
+
+input UpdateRoleInput {
+  siteId: ID
+  userId: ID
+  roleCode: ID!
+  createdBy: String
+  id: ID!
+}
+
+input CreateFileInput {
+  fileName: String!
+  fileMime: String
+  fileType: String
+  filePath: String!
+  fileSize: Float
+  siteId: ID!
+  createdBy: ID!
+}
+
+input CreateSettingInput {
+  """siteId, nodeId, etc... """
+  belongId: ID!
+
+  """values"""
+  values: JSON
+}
+
+input UpdateSettingInput {
+  """siteId, nodeId, etc... """
+  belongId: ID
+
+  """values"""
+  values: JSON
+  id: ID!
+}
+
+input CreateSettingValuesInput {
+  """siteId, nodeId, etc... """
+  belongId: ID!
+
+  """setting id"""
+  settingId: ID!
+
+  """values"""
+  values: JSON
+}
+
+input UpdateSettingValuesInput {
+  """siteId, nodeId, etc... """
+  belongId: ID
+
+  """setting id"""
+  settingId: ID
+
+  """values"""
+  values: JSON
+  id: ID!
+}
+
+input CreateMediaInput {
+  siteId: ID!
+  nodeId: ID!
+  title: String!
+  mediaList: JSON
+  content: String
+  thumbUrl: String
+}
+
+input UpdateMediaInput {
+  siteId: ID
+  nodeId: ID
+  title: String
+  mediaList: JSON
+  content: String
+  thumbUrl: String
+  id: ID!
+}
+
+input CreateCustomizedFormInput {
+  """siteId"""
+  siteId: ID!
+
+  """nodeId"""
+  nodeId: ID!
+  values: JSON
+}
+
+input UpdateCustomizedFormInput {
+  """siteId"""
+  siteId: ID
+
+  """nodeId"""
+  nodeId: ID
+  values: JSON
+  id: ID!
+}
